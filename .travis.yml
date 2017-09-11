@@ -1,16 +1,17 @@
 env:
   global:
-    - PATH: /usr/local/texlive/bin/x86_64-linux:$PATH
-    - GH_REF: github.com/${TRAVIS_REPO_SLUG}.git
-    - secure: "J/oFevIbuIyl1P16qdSVaNeJ0P1rL5Hub92SlDcNmhZ6NGu7+9N43fDs+uf3ihCmu664wZDKzB8YACetOfZ+XrZ9M72IfI3CzA7OWrx8elsub+WvaaOeVp3D+tDgNzxhXVRVJl5jZMmgEh5KjZ6GNshuTEPrIN+14s8bR4CciEM="
+  - PATH: "/usr/local/texlive/bin/x86_64-linux:$PATH"
+  - GH_REF: github.com/${TRAVIS_REPO_SLUG}.git
+  - TARGET_BRANCH: gh-pages
+  - secure: R52wwE5ijZj45GqAHy9O/XBVPS+JvDDn3BsJ+aW+ayoWrU+PP4gKnhMCakBZXvKcMX8X2maN+34p9cSNdB6U73HzfI6EzSusGz1oEAsT3iyasMnH0rG9x/XFpTxuoiLfji6Oqf1BCbSPEk/aIXCOocz4416riUsjsR/UwC27+9wFNPbZ1CGpaMKDwNOZ1x9zMwh3QZD0O9oT/YRQl2YJykehD233O826U21fbSbiJmWEzuQFnYzp6ztbzaFd0u4+wWd5qR4JLuXGuBnjJRGEteBvawznajT+OgPbOC6tVX8ITh5UP/hurBEsbtSBSipoxmhc4f/mws/mIfrbNMaFUQJGOKm2KEgAJaPnT1V+X2PzR9CwoYPBqSLqsVyvgIY+MfbAjUXVAkwLVoqvKHF5v6Zhlkmu/L2VzRb8ATplVuuLZgQh3KQdq/ZbE8XnTumvUpbECVN6ThH/YWLiv/ah0erPimfPuLDmR8RJPtEyjYq+HPldgukl6/rAPVOv6udBm02sJy8m7SvWq7dhrMxwco97AyWgNwY3UJ4u7BC9sNwoyNFbfcY6I7NG4unPucmqB2oqDnp0HJn0Pt8ZUEd4s713b36RqjrbRZs7v2tqqkEfu3SYQcGNkSanMhUy8GmkqxVRRTuZa3a2aqfJ0TkQ5L0HnbGXajNZdX0zdETOjKk=
+  - secure: BTOF6uCyd6zvUZIJPmJJMiL5LTNd0wMBMU3cvEjF4Uy+SM5lsjhgaSgWlP0QAhdwHBms2oKgoswsKQUokPDXO/nYvaRyUshV9RlniiEBdQTvcuyt7o3v7rE6aGGb+58Dk+iDhdSCSJLu1z5ZJ7Qt9EI4tgtkzIHxp4/Be/VzpdytaGF4zKN2mLGItM5CqtzCAKgnTdYd46UHVY8n4XhUIbPuEdbPAu1pl/YPW/EHbOlUYbKo9aFupU42tOSw4rEjYWDoMqtNdhQyQ90fVvcZTasZuSqUWVRNDwsTW030c107cPQkjDip65SVTLQyDIfdVXJ093EdNGRxkEsCt9j2jXtdGnmVZze+YJ8NRKIXX3Vjh2a9H7XOVglcZC8An8XROlACGqZyC+Ny9hASV3n7quUB4lvOA8Lr9AJu8KXfmRRwfAT8gqeOXVNfSKhEPTjqTFXPdLXROSeZx9tkhFJ0suq9DMFpB28c9HasoGntOMjrNNBmgISSbhSoUt8VBiyeugr0yhyA/fV25Pp0HaIai6l6J01TZqVUUVlrPJwBkgaSTXaWJfIaYTWYNmnf8Z3TyH+v6MSeC9NoQCWtT6d1kn9I7EuvVRUbKgnl38e9drOwQ/Ul+w9SKCHG45vgf0kWdXrL3mysWmq25Aha/LTY2K/8XTpQwAtB4NIFFSqR5vU=
 git:
   submodules: false
 before_install:
-  - git submodule update --init --recursive
-#before_script:
-#  - cd ./developers/ && sudo -E ./texlive_install.sh && cd ../
+- git submodule update --init --recursive
 script:
-  - sudo -E make tex_env
-  - make all
+- sudo -E make tex_env
+- make all
 after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then bash ./developers/deploy-ghpages.sh; fi
+- if [[ "$TRAVIS_BRANCH" == "master" ]]; then bash ./developers/deploy-ghpages.sh;
+  fi
