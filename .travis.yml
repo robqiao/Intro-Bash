@@ -10,7 +10,7 @@ before_install:
 - git submodule update --init --recursive
 script:
 - sudo -E make tex_env
-- make all
+- make -j 4 all
 after_success:
 - if [[ "$TRAVIS_BRANCH" == "master" ]]; then bash ./developers/deploy-ghpages.sh;
   fi
