@@ -33,12 +33,13 @@ cd gh-pages | ls -al
 mkdir -p pdfs-latest
 rm -f pdfs-latest/*.pdf
 cp -Rf *.pdf pdfs-latest/
+cd pdfs-latest/
 git add -f .
 git commit -m "Lastest PDFs on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
 git status
 
 # Auto push the Change
-git push $SSH_REPO $TARGET_BRANCH > /dev/null 2&&1
+git push -fq  $SSH_REPO $TARGET_BRANCH > /dev/null 2&&1
 
 # Push using Deploy Key 
 #git push -fq "https://${DEPLOY_KEY}@${GH_REF}" ${TARGET_BRANCH}  > /dev/null 2>&1
