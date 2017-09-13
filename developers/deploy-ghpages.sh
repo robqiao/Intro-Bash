@@ -16,7 +16,8 @@ SSH_REPO=${GH_REF/github.com\//git@github.com:}
 echo $GH_REF
 echo $SSH_REPO
 
-git clone --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+git submodule add --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+git status
 #git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
 #Using GH_TOKEN
@@ -39,7 +40,7 @@ git commit -m "Lastest PDFs on successful travis build $TRAVIS_BUILD_NUMBER auto
 git status
 
 # Auto push the Change
-git push -fq  "${SSH_REPO}" ${TARGET_BRANCH} > /dev/null 2&&1
+git push -fq  "${SSH_REPO}" ${TARGET_BRANCH} > /dev/null 2>&1
 
 # Push using Deploy Key 
 #git push -fq "https://${DEPLOY_KEY}@${GH_REF}" ${TARGET_BRANCH}  > /dev/null 2>&1
