@@ -5,7 +5,6 @@ set -e # Exit with non zero exit code if anything fails
 chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
-cat deploy_key
 
 SOURCE_BRANCH="master"
 
@@ -13,7 +12,7 @@ SOURCE_BRANCH="master"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.name "travis-ci"
 
-SSH_REPO='git@${GH_REF}'
+SSH_REPO=git@${GH_REF}
 echo $GH_REF
 echo $SSH_REPO
 
