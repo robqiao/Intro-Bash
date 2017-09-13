@@ -16,4 +16,4 @@ after_success:
   fi
 cache: 
   directories: 
-    - /usr/local/texlive/bin/x86_64-linux
+    - /usr/local/
