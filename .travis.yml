@@ -17,4 +17,4 @@ after_success:
 cache: 
   directories: 
     - /usr/local/
-    - /home/travis/
+    # - /home/travis/
