@@ -16,7 +16,7 @@ SSH_REPO=${GH_REF/github.com\//git@github.com:}
 echo $GH_REF
 echo $SSH_REPO
 
-git submodule add --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+git clone add --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 git status
 #git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
