@@ -4,8 +4,7 @@ set -e # Exit with non zero exit code if anything fails
 # Get the deploy key by using Travis's stored variables to decrypt deploy_key.enc 
 chmod 600 deploy_key
 eval `ssh-agent -s`
-apt-get install sshpass
-sshpass -e ssh-add deploy_key
+ssh-add deploy_key
 
 SOURCE_BRANCH="master"
 
