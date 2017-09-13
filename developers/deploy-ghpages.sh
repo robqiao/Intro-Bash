@@ -5,6 +5,7 @@ set -e # Exit with non zero exit code if anything fails
 chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
+cat deploy_key
 
 SOURCE_BRANCH="master"
 
