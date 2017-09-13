@@ -13,6 +13,7 @@ git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.name "travis-ci"
 
 SSH_REPO='git@${GH_REF}'
+echo $SSH_REPO
 
 git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
@@ -32,9 +33,10 @@ rm -f pdfs-latest/*.pdf
 cp -Rf ../*.pdf ./pdfs-latest
 git add -f .
 git commit -m "Lastest PDFs on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
+ls -al 
 
 # Auto push the Change
-git push $SSH_REPO $TARGET_BRANCH
+git push $SSH_REPO $TARGET_BRANCH > /dev/null 2&&1
 
 # Push using Deploy Key 
 #git push -fq "https://${DEPLOY_KEY}@${GH_REF}" ${TARGET_BRANCH}  > /dev/null 2>&1
