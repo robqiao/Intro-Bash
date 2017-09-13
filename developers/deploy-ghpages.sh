@@ -10,13 +10,16 @@ SOURCE_BRANCH="master"
 
 # Configure git and clone the repo
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
+git config user.email
 git config --global user.name "travis-ci"
+git config user.name
 
 SSH_REPO=${GH_REF/github.com\//git@github.com:}
 echo $GH_REF
 echo $SSH_REPO
 
-git clone add --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+git checkout master
+git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 git status
 #git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
