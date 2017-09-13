@@ -12,7 +12,7 @@ SOURCE_BRANCH="master"
 git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.name "travis-ci"
 
-SSH_REPO=git@${GH_REF}
+SSH_REPO=${${GH_REF}/github.com\//git@github.com:}
 echo $GH_REF
 echo $SSH_REPO
 
