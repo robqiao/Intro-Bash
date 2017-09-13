@@ -13,6 +13,7 @@ git config --global user.email "$COMMIT_AUTHOR_EMAIL"
 git config --global user.name "travis-ci"
 
 SSH_REPO='git@${GH_REF}'
+echo $GH_REF
 echo $SSH_REPO
 
 git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
