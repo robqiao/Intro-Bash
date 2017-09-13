@@ -16,7 +16,8 @@ SSH_REPO=git@${GH_REF}
 echo $GH_REF
 echo $SSH_REPO
 
-git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+git clone --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+#git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
 #Using GH_TOKEN
 #git clone --quiet --branch=gh-pages https://${GH_TOKEN}@${GH_REF} gh-pages > /dev/null 2>&1
@@ -28,8 +29,8 @@ git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 #fi 
 
 # Commit and Push the Changes
-cd gh-pages
-ls *.pdf 
+cd gh-pages | ls -al
+ls ../*.pdf 
 mkdir -p pdfs-latest
 rm -f pdfs-latest/*.pdf
 cp -Rf ../*.pdf ./pdfs-latest
