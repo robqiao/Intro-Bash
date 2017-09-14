@@ -23,7 +23,9 @@ echo "Change to master branch and show status"
 git status
 #git clone --quiet --branch=gh-pages https://${GH_REF} gh-pages > /dev/null 2>&1
 git clone --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
-cd gh-pages | pwd | ls -al
+cd gh-pages
+pwd 
+ls -al
 echo "New directory for gh-pages branch and show status" 
 git status
 #git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
@@ -38,11 +40,11 @@ git status
 #fi 
 
 # Commit and Push the Changes
-mkdir -p pdfs-latest | ls -al 
+mkdir -p pdfs-latest 
 rm -f pdfs-latest/*.pdf
-cp -Rf *.pdf pdfs-latest/
-cd pdfs-latest/
-git add -f .
+cp -Rf ../*.pdf pdfs-latest/
+cd pdfs-latest/ | ls -al | cd ..
+git add -f . 
 git commit -m "Lastest PDFs on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
 git status
 
