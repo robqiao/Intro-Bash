@@ -19,11 +19,13 @@ echo $GH_REF
 echo $SSH_REPO
 
 git checkout master
-echo "Change to master branch and show status" | git status
-git clone --branch=gh-pages https://${GH_REF} gh-pages > /dev/null 2>&1
-#git clone --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
-cd gh-pages | ls -al
-echo "New directory for gh-pages branch and show status" | git status
+echo "Change to master branch and show status"
+git status
+#git clone --quiet --branch=gh-pages https://${GH_REF} gh-pages > /dev/null 2>&1
+git clone --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
+cd gh-pages | pwd | ls -al
+echo "New directory for gh-pages branch and show status" 
+git status
 #git clone --quiet --branch=gh-pages $SSH_REPO gh-pages > /dev/null 2>&1
 
 #Using GH_TOKEN
