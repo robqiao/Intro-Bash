@@ -50,7 +50,7 @@ packages=(
   fancyhdr
   graphics
   psnfss
-  graphics-def
+  pdftex-def
   oberdiek
   colortbl
   hyperref
