@@ -25,6 +25,8 @@ tar \
   -no-gui \
   -profile texlive.profile
 
+export PATH=/usr/local/texlive/bin/x86_64-linux:$PATH
+
 # Install packages required by this style
 packages=(
   tools
