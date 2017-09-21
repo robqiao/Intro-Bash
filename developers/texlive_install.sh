@@ -56,7 +56,7 @@ packages=(
   hyperref
 )
 
-ls -al /usr/local/textlive/bin/x86_64-linux/
+ls -al /usr/local/texlive/bin/x86_64-linux/
 
 /usr/local/texlive/bin/x86_64-linux/tlmgr \  
   -repository ${CTAN_MIRROR_URL:-'http://mirror.ctan.org'}/systems/texlive/tlnet \
