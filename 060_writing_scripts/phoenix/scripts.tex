@@ -305,7 +305,7 @@ else
 	exit 1
 fi
 
-# If the file exists, extract the important CDS data
+# If the file exists, extract the important ProbeFeature data
 if [ -a ${FILENAME} ]; then
 	echo Extracting ProbeFeature data from ${FILEDIR}/${FILENAME}
 	echo "SeqID Source Start Stop Strand Tags" > ${OUTFILE}
