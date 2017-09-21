@@ -1,7 +1,5 @@
 env:
   global:
-  - sudo: required
-  - dist: precise
   - PATH: "/usr/local/texlive/bin/x86_64-linux:$PATH"
   - GH_REF: github.com/${TRAVIS_REPO_SLUG}.git
   - TARGET_BRANCH: gh-pages
