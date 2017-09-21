@@ -26,7 +26,9 @@ tar \
   -profile texlive.profile
 
 export PATH=/usr/local/texlive/2017/bin/x86_64-linux/:$PATH
-
+echo $PATH
+which latexmk
+whereis latexmk 
 
 # Install packages required by this style
 packages=(
