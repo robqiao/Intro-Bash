@@ -25,7 +25,8 @@ tar \
   -no-gui \
   -profile texlive.profile
 
-export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
+export PATH=/usr/local/texlive/2017/bin/x86_64-linux:/usr/local/texlive/:$PATH
+
 
 # Install packages required by this style
 packages=(
