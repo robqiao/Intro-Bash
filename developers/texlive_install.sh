@@ -25,7 +25,7 @@ tar \
   -no-gui \
   -profile texlive.profile
 
-export PATH=/usr/local/texlive/bin/x86_64-linux:$PATH
+export PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
 
 # Install packages required by this style
 packages=(
@@ -58,7 +58,7 @@ packages=(
   hyperref
 )
 
-/usr/local/texlive/bin/x86_64-linux/tlmgr \
+/usr/local/texlive/2017/bin/x86_64-linux/tlmgr \
   -repository ${CTAN_MIRROR_URL:-'http://mirror.ctan.org'}/systems/texlive/tlnet \
   install \
     ${packages[@]}
