@@ -3,6 +3,7 @@
   Robert Qiao, Research Services Phoenix Team, University of Adelaide
 \mailto{robert.qiao@adelaide.edu.au}\\ 
 }
+}}
 %----------------------------------------------------------------------------------------
 % MODULE TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -143,11 +144,88 @@ nano ~/fastdir/training_linux/seqData.fastq
 \end{lstlisting}
 
 \subsection{How To Save A File Using Nano}
-You can add text to the nano editor simply by typing the contents directly into the editor. Saving the file, however, requires the use of a keyboard shortcut.
+You can add text to the nano editor simply by typing the contents directly into the editor. Saving
+the file, however, requires the use of a keyboard shortcut.
 
 To save a file in nano press \texttt{ctrl} and \texttt{O} at the same time.
 
-If your file already has a name you just need to press enter to confirm the name otherwise you will need to enter the filename that you wish to save the file as.
+If your file already has a name you just need to press enter to confirm the name otherwise you will
+need to enter the filename that you wish to save the file as.
 
 \subsubsection{How To Save A File In DOS Format Using Nano}
-To save the file in DOS format press \texttt{ctrl}  and \texttt{O} to bring up the filename box. Now press \texttt{alt} and \texttt{d} for DOS format.
+To save the file in DOS format press \texttt{ctrl}  and \texttt{O} to bring up the filename box. Now
+press \texttt{alt} and \texttt{d} for DOS format.
+\subsubsection{How To Save A File In MAC Format Using Nano}
+To save the file in MAC format press \texttt{ctrl}  and \texttt{O} to bring up the filename box. Now
+press \texttt{alt} and \texttt{m}  for MAC format.
+
+\subsection{How To Backup A File Before Saving It In Nano}
+If you want to save the changes to a file that you are editing but you want to keep a backup of the
+original press \texttt{ctrl}  and \texttt{O} to bring up the save window and then press \texttt{alt}
+and \texttt{B}.
+
+The word [backup] will appear in the filename box.
+
+After you have finished editing your file you will want to leave the nano editor.
+
+To exit nano simply press \texttt{ctrl}  and \texttt{x} at the same time.
+
+If the file hasn't been saved you will be prompted to do so. If you select "Y" then you will be
+prompted to enter a file name.
+
+\subsection{Displaying Cursor Position Using Nano}
+If you wish to know how far down a document you are within nano you can press the \texttt{ctrl}  and
+\texttt{c} keys at the same time.
+
+The output is shown in the following format:
+\begin{lstlisting}
+line 5/11 (54%), col  10/100 (10%),  char 100/200 (50%)
+\end{lstlisting}
+
+\subsection{How To Read A File Using Nano}
+If you opened nano without specifying a filename you can open a file by pressing \texttt{ctrl}  and
+\texttt{r} at the same time.
+
+You are now able to specify a filename to read into the editor. If you already have text loaded into
+the window the file you read in will append itself to the bottom of your current text.
+
+If you want to open the new file in a new buffer press \texttt{alt} and \texttt{f}.
+
+\subsection{How To Search And Replace Using Nano}
+To start a search within nano press \texttt{ctrl}  and \texttt{\}. 
+
+To turn off replace press \texttt{ctrl}  and \texttt{r}. You can turn on replace again by repeating
+the keystroke.
+
+To search for text enter the text you wish to search for and press return.
+
+To search backwards through the file press \texttt{ctrl}  and \texttt{r} to bring up the search
+window. Press alt and b.
+
+To force case sensitivity bring up the search window again and then press \texttt{alt} and
+\texttt{c}. You can turn it off again by repeating the keystroke.
+
+Nano wouldn't be a Linux text editor if it didn't provide a way to search using regular expressions.
+To turn regular expressions on bring up the search window again and then press alt and r.
+
+You can now use regular expressions for searching for text.
+
+\subsection{Check Your Spelling Within Nano}
+Again nano is a text editor and not a word processor so I'm not sure why spelling is a key feature
+of it but you can indeed check your spellings using the \texttt{ctrl}  and \texttt{t} keyboard shortcut.
+
+\subsection{Some Goodies}
+\begin{information}
+There are a number of switches you can specify when using nano. The best ones are covered below. You can find the rest by reading the nano manual.
+\begin{itemize}
+	\item nano -B (backs up the file prior to editing it)  
+	\item nano -E (converts tabs to spaces when editing)
+	\item nano -c (constantly show the cursor position stats)
+	\item nano -i (automatically indents new lines to the same position as the previous line)
+	\item nano -k (toggle cut so that it cuts from cursor position instead of the whole line)
+	\item nano -m (provides mouse support to the editor)
+	\item nano -v (opens file as readonly)
+\end{itemize}
+\end{information}
+
+
