@@ -3,7 +3,7 @@
   Robert Qiao, Research Services Phoenix Team, University of Adelaide
 \mailto{robert.qiao@adelaide.edu.au}\\ 
 }
-
+}}}}}
 %----------------------------------------------------------------------------------------
 % MODULE TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -26,10 +26,11 @@ Luckly, there is such editor called nano and that is what we will use for the cl
 The nano editor has its own set of keyboard shortcuts of course and in this guide I aim to help you
 to understand the meaning of all those special keystrokes you can use to make your life easier when
 using nano. \\
+
 But before we dive into the nano, let's generally go over some of the streamline editors like vi,
 emacs. 
 
-\section {vi}
+\section{vi}
 
 \begin{information}
 Vi (pronounced "vee-eye") is the standard editor for Unix systems. It is universally available on
@@ -39,6 +40,7 @@ the screen where you want to make a change; or optionally, you specify some kind
 Vi updates your screen to reflect changes that you make in the file. Actually, it works on a copy of
 the file in memory, and only updates the file on disk when you tell it to, such as when you end the
 editing session. \\
+
 Main advantages of vi are including: 
 \begin{itemize}
   \item Vi is universally available on Unix systems. It has been around so long in a stable form
@@ -56,4 +58,97 @@ the program needs to know is what type of terminal you have. When you log in, if
 figure out what kind of terminal you have, it will prompt you to specify a terminal type. The most
 common type is the vt100, which most modern terminals and PC communications software emulate.
 \end{itemize}
+
+The chief disadvantage of vi is that it is touchy. That is, every single key you touch on the
+keyboard seems to do something, often something mysterious. There is a rich set of single character
+commands to learn.
 \end{information} 
+
+
+\section{emacs}
+
+\begin{information}
+Emacs is a widely used editor available on many types of systems. The GNU version is installed on
+pangea. This editor is very large and fully programmable with a built-in object oriented language.
+As a result, it has become more of a shell than an editor. Using "macros", it is possible to do many
+non-editing functions from within emacs, including compiling and debugging programs and browsing the
+web. \\
+
+Emacs is not described in these notes because it is too complicated and bloated for simple editing.
+Entire books are available to teach emacs. \\
+
+If you are already familiar with emacs, you can use it on pangea and most other Unix systems on
+campus. Simply type the shell command
+\begin{lstlisting}
+emacs
+\end{lstlisting}
+\end{information}
+
+\section{Nano}
+
+Now, let's have a more detailed look of Nano. \\
+
+\begin{warning}
+To setup this part of the course, please login to your Phoenix account and download the example file
+to your /fastdir directory now
+\begin{lstlisting}
+cp -r /apps/examples/training_linux/ ~/fastdir/
+\end{lstlisting}
+please check to make sure you command blow contains valid 4 files. If you see error messages, please
+indicate to tutors, 
+you should get this step fixed before carry on further
+\begin{lstlisting}
+ls -al ~/fastdir/training_linux
+\end{lstlisting}
+\end{warning}
+
+\subsection{How To Get Nano}
+The nano editor is available by default in all the most popular Linux distributions and you can run
+it with one simple command:
+\begin{lstlisting}
+nano 
+\end{lstlisting}
+The above command will simply open a new file. You can type into the window, save the file and exit.
+
+\subsection{How To Open A New File And Give It A Name Using Nano}
+Whilst simply running nano is ok you might want to give your document a name before starting. To do
+this simply give the filename after the nano command.
+\begin{lstlisting}
+nano myfile.txt
+\end{lstlisting}
+
+You can, of course, supply a complete path to create a file anywhere on your Linux system (as long
+as you have the permissions to do so).
+\begin{lstlisting}
+nano ~/fastdir/training_linux/myfile.txt
+\end{lstlisting}
+
+\subsection{How To Open An Existing File Using Nano}
+
+You can use the same command as the one above to open an existing file.
+
+Simply run nano with the path to the file you wish to open.
+
+To be able to edit the file you must have permissions to edit the file otherwise, it will open as a
+readonly file (assuming you have read permissions).
+
+\begin{lstlisting}
+cd ~/fastdir/training_linux
+nano seqData.fastq
+\end{lstlisting}
+
+You can, of course, supply a complete path to open a file anywhere on your Linux system (as long as
+you have the permissions to do so).
+\begin{lstlisting}
+nano ~/fastdir/training_linux/seqData.fastq
+\end{lstlisting}
+
+\subsection{How To Save A File Using Nano}
+You can add text to the nano editor simply by typing the contents directly into the editor. Saving the file, however, requires the use of a keyboard shortcut.
+
+To save a file in nano press \texttt{ctrl} and \texttt{O} at the same time.
+
+If your file already has a name you just need to press enter to confirm the name otherwise you will need to enter the filename that you wish to save the file as.
+
+\subsubsection{How To Save A File In DOS Format Using Nano}
+To save the file in DOS format press \texttt{ctrl}  and \texttt{O} to bring up the filename box. Now press \texttt{alt} and \texttt{d} for DOS format.
