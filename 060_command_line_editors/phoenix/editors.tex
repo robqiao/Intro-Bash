@@ -1,0 +1,59 @@
+\setModuleTitle{Command Line Editors}
+\setModuleAuthors{%
+  Robert Qiao, Research Services Phoenix Team, University of Adelaide
+\mailto{robert.qiao@adelaide.edu.au}\\ 
+}
+
+%----------------------------------------------------------------------------------------
+% MODULE TITLE PAGE
+%----------------------------------------------------------------------------------------
+% BEGIN: Module Title Page
+%  * The chapter page will always appear on odd numbered page
+\chapter{\moduleTitle}
+\newpage
+
+In addition to the streaming editor named sed as you have studied earlier, which operates on a file
+in a non-interactive mode according to a set of instructions that you specify on the command line or
+in a
+script. It can be used for "canned" editing tasks that must be applied in the same way to many
+files. More commonly, we use interactive editors and there are three powerful interactive text
+editors that
+are commonly used on Unix computers: vi, pico, and emacs. \\
+
+Although vi, pico, emacs are extremely powerful, to get a firm grasp takes some efforts and most of
+times we just need to open, amend and save a file without remembering the keyboard shortcuts.
+Luckly, there is such editor called nano and that is what we will use for the class today.
+The nano editor has its own set of keyboard shortcuts of course and in this guide I aim to help you
+to understand the meaning of all those special keystrokes you can use to make your life easier when
+using nano. \\
+But before we dive into the nano, let's generally go over some of the streamline editors like vi,
+emacs. 
+
+\section {vi}
+
+\begin{information}
+Vi (pronounced "vee-eye") is the standard editor for Unix systems. It is universally available on
+Unix systems. Vi is a screen editor. It treats your computer screen as a window into the file. You
+move the window around to view different parts of the file. You move the cursor to the location on
+the screen where you want to make a change; or optionally, you specify some kind of global change.
+Vi updates your screen to reflect changes that you make in the file. Actually, it works on a copy of
+the file in memory, and only updates the file on disk when you tell it to, such as when you end the
+editing session. \\
+Main advantages of vi are including: 
+\begin{itemize}
+  \item Vi is universally available on Unix systems. It has been around so long in a stable form
+that it is essentially bug free. Many clones have been written for other kinds of computers.
+  \item Vi has many powerful commands that utilize just the alphanumeric keys -- it does not require
+special function keys.
+  \item Vi is a small program that does not require a lot of system memory or CPU time. It works
+very fast, even on large files.
+  \item While vi is not programmable, it has a simple way to let other Unix programs, such as the
+sort utility, work on selected portions of your file. This adds the functionality of all those
+programs to the editor.
+  \item Vi is completely terminal device independent. It will work with any kind of terminal.
+A system file describes the capabilities and control sequences of each kind of terminal for vi. All
+the program needs to know is what type of terminal you have. When you log in, if pangea cannot
+figure out what kind of terminal you have, it will prompt you to specify a terminal type. The most
+common type is the vt100, which most modern terminals and PC communications software emulate.
+\end{itemize}
+\end{information} 
