@@ -12,7 +12,6 @@ before_install:
 - git submodule update --init --recursive
 - set -e
 script:
-- rm train*
 - sudo make clean
 - sudo -E make tex_env
 - make -j 4 all
