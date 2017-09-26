@@ -10,6 +10,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_373c076bae3a_key -iv $encrypted_373c076bae3a_iv
   -in bot_deploy_key.enc -out deploy_key -d
 - git submodule update --init --recursive
+- set -e
 script:
 - rm train*
 - sudo make clean
