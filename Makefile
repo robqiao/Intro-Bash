@@ -48,13 +48,13 @@ $(handout_latex_files): template.tex $(MODULE_TEX_FILES)
 	sed -e '/^$$/d' $(MODULE_SED_EXPRESSIONS) < template.tex > $@
 
 trainee_%.pdf: %.tex
-	sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
+	/usr/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
 
 trainer_%.pdf: %.tex
-	sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' $<
+	/usr/bin/sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
-	sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
+	/usr/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
 
 clean: 
 	if [[ -e $(handout_latex_files) ]]; then latexmk -C -jobname=trainee_$(basename $(handout_latex_files)) $(handout_latex_files); latexmk -C -jobname=trainer_$(basename $(handout_latex_files)) $(handout_latex_files); fi
