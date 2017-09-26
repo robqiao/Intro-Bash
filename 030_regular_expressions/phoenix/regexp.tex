@@ -1,0 +1,302 @@
+\setModuleTitle{Regular Expressions}
+\setModuleAuthors{%
+  Stephen Bent, Robinson Research Institute, University of Adelaide\\
+  Steve Pederson, Bioinformatics Hub, University of Adelaide \mailto{stephen.pederson@adelaide.edu.au}\\
+}
+\setModuleContributions{%
+  Dan Kortschak, Adelson Research Group, University of Adelaide \mailto{dan.kortschak@adelaide.edu.au} \\
+  Bowen Chen, Technology Service, University of Adelaide 
+  \mailto{bowen.chen@adelaide.edu.au} \\
+}
+
+%----------------------------------------------------------------------------------------
+% MODULE TITLE PAGE
+%----------------------------------------------------------------------------------------
+% BEGIN: Module Title Page
+%  * The chapter page will always appear on odd numbered page
+\chapter{\moduleTitle}
+\newpage
+
+\section{Introduction}
+\textit{Regular expressions} are a powerful \& flexible way of searching for text strings amongst a large document or file.
+Most of us are familiar with searching for a word within a file using software such as MS Word or Excel, but regular expressions allow us to search for these with more power and flexibility, particularly in Linux files and directories management.
+Instead of searching strictly for a word or text string, we can search using less strict matching criteria.
+For example, we could search for a string that is either \texttt{slurm-3725} or \texttt{slurm-3825} by using the patterns  \texttt{slurm-3[78]25} or  \texttt{slurm-3(7|8)25}.
+These two patterns will search for an  \texttt{slurm-3}, followed by either a  \texttt{7} or  \texttt{8}, then followed strictly by a  \texttt{25}.
+Similarly a match to \texttt{slurm-37725} can be found by using the patterns \texttt{slurm-3[78][78]25} or  \texttt{slurm-3[78]\{2\}25}. \\
+
+Whilst the bash shell has a great capacity for searching a file to matches to regular expressions, this is where languages like \textit{perl} and \textit{python} offer a great degree more power, such as more complex data structure, object-oriented programming(OOP) and more libraries.
+%The commands \texttt{awk} \& \texttt{sed} which we will look at later today also use regular expressions to great effect.
+
+%This type of searching is also very common for matching sample names, or extracting key pieces of information from master sample sheets.
+
+\section{The command \texttt{grep}}
+The built-in command which searches using regular expressions in the terminal is \texttt{grep}.
+This function searches a file or input on a line-by-line basis, making patterns split across lines more difficult to find, which is one place that a programming language like Python or Perl would become preferable.  
+The \texttt{man grep} page contains more detail on regular expressions under the \texttt{REGULAR EXPRESSIONS} header (scroll down a few pages).  
+As can be seen in the \texttt{man} page, the command follows the form
+\begin{lstlisting}[style=command_syntax]
+grep [OPTIONS] 'pattern' filename
+\end{lstlisting}
+The option \texttt{-E} is preferable as it stands for Extended, which we can think of as ``Easier''.
+As well as the series of conventional numbers and characters that we are familiar with, we can match to characters with special meaning, as we saw above where enclosing the two letters in brackets gave the option of matching either. 
+The \texttt{-E} option opens up the full set of wild-card characters, and can also be called simply by using \texttt{egrep} instead of \texttt{grep -E}.
+This is the default version that many of us use.\\
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{|p{4cm} | p{11.cm} |}
+\hline
+Special Character & Meaning \\ \hline
+\textbackslash w & match any letter or digit, i.e. a word character \\
+\textbackslash s & match any white space character, includes spaces,
+tabs \& end-of-line marks \\
+\textbackslash d & match any digit from 0 to 9 \\
+. & matches any single character \\
++ & matches one or more of the preceding character (or pattern) \\
+\** & matches zero or more of the preceding character (or pattern) \\
+? & matches zero or one of the preceding character (or pattern) \\
+\{x\} or \{x,y\} & matches x or between x and y instances of the preceding
+character \\
+\^{} & matches the beginning of a line (when not inside square brackets) \\
+\$ & matches the end of a line \\
+() & contents of the parentheses treated as a single pattern \\
+{[}] & matches any one of the characters inside the brackets \\
+{[}\^{}] & matches anything other than any of the characters in the brackets \\
+\texttt{|} & either the string before or the string after the "pipe" (use parentheses) \\
+\textbackslash & don't treat the following character in the way you normally would. This is why the first three entries in this table started with a backslash, as this gives them their ``special'' properties, whereas placing a backslash before a `.' symbol will enable it to function as an actual dot/full-stop. \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Pattern Searching}
+In this section we'll learn the basics of using the \texttt{egrep} command \& what forms the output can take.
+%In your \texttt{\~{}/firstname/} directory you can find the file \texttt{words}, which we placed there earlier today.
+Using the command to download the file, regular\_express.txt
+\begin{lstlisting}[style=command_syntax]
+cp /apps/examples/training_linux/regular_express.txt .
+\end{lstlisting}
+
+This is simply a text file with several words on every line. \\
+
+\begin{steps}
+Make sure the txt file in your working directory  or else \texttt{egrep} won't be able to find the file. \\
+
+Now let's try a few searches to get a feel for the basic syntax of the command.
+Using the previous table of special characters, try to describe what you're searching for on your notes \textbf{BEFORE} you enter the command.
+Do the results correspond with what you expected to see?
+
+\begin{lstlisting}
+egrep -n 't[ae]st' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n 'oo' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n '[^g]oo' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n '[^a-z]oo' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n '[0-9]' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n '[^[:lower:]]oo' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -n '^[a-z]' regular_express.txt
+\end{lstlisting}
+\end{steps}
+
+\begin{steps}
+In the above, we were changing the pattern to extract different results from the files.
+Now we'll try a few different options to change the output, whilst leaving the pattern unchanged.
+If you're unsure about some of the options, don't forget to consult the \texttt{man} page. \\
+\begin{lstlisting}
+egrep -n 'the' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -vn 'the' regular_express.txt
+\end{lstlisting}
+\begin{lstlisting}
+egrep -in 'the' regular_express.txt
+\end{lstlisting}
+\end{steps}
+
+%\section{A More Biological Context}
+%
+%\begin{steps}
+%Let's return to the \texttt{GFF} file we downloaded in the previous section.
+%\end{steps}
+%
+%\begin{questions}
+%Before we use regular expressions, use a previous tool to find how many features you think are contained in this file?\\
+%\begin{answer}
+%\texttt{wc -l GCF\_000011985.1\_ASM1198v1\_genomic.gff} \\
+%\end{answer}
+%
+%
+%As we know, this file contains 7 header lines beginning with \texttt{\#}, and there may be more strange lines later in the file.
+%Can you think of a way to count features by telling \texttt{egrep} to ignore these lines?
+%You may need to check the manual.
+%
+%\begin{answer}
+%This will give 4355, but the first 7 lines are header lines.
+%To count the non-header lines you could try several things:\\
+%\texttt{egrep -vc `\^{}\#' GCF\_000011985.1\_ASM1198v1\_genomic.gff} \\
+%or\\
+%\texttt{egrep -c `\^{}[\^{}\#]' GCF\_000011985.1\_ASM1198v1\_genomic.gff} \\
+%\end{answer}
+%
+%\end{questions}
+%
+%As mentioned above, this file contains multiple features such as \textit{regions}, \textit{genes}, \textit{CDSs}, \textit{exons} or \textit{tRNAs}.
+%If we wanted to find how many regions are annotated in this file we could use the processes we've learned above:
+%\begin{lstlisting}
+%egrep -c `region' GCF\_000011985.1\_ASM1198v1\_genomic.gff
+%\end{lstlisting}
+%
+%If we wanted to count how many genes are annotated, the first idea we might have would be to do something similar using a search for the pattern \texttt{`gene'}. 
+%
+%\begin{questions}
+%Do you think this is the number of genes?
+%Try searching for the number of coding DNA sequences using the same approach (i.e. CDS) \& then add the two numbers?
+%Is this more than the total number of features we found earlier?
+%Can you think of a way around this using regular expressions?
+%\begin{answer}
+%Note that some of the occurrences of the word \textit{gene} appears in many lines which are not genes.
+%We need to restrict the search to one of the tab-separated fields by including a white-space character in the search.
+%The command:\\
+%\texttt{egrep -n `.+\textbackslash s.+\textbackslash sgene\textbackslash s' GCF\_000011985.1\_ASM1198v1\_genomic.gff | wc -l} \\
+%will give a much different result as now we are searching for the word gene surrounded by white-space, after at least two tab delimiters.
+%\end{answer}
+%
+%Alternatively, there is a command \texttt{cut} available.
+%Call the manual page (\texttt{man cut}) and inspect the option \texttt{-f}.
+%The information about the types of features annotated is in the third field.
+%Try to think of a way of searching this field alone.
+%\begin{answer}
+%\texttt{cut -f3 GCF\_000011985.1\_ASM1198v1\_genomic.gff | grep -c `gene'}\\
+%Or even more accurately
+%\texttt{cut -f3 -s GCF\_000011985.1\_ASM1198v1\_genomic.gff | egrep -c `gene'}\\
+%although it gives the same results in this instance
+%\end{answer}
+%\end{questions}
+%
+%
+%\begin{bonus}
+%\begin{questions}
+%
+%A similar question may be how many \textit{types} of features are in this file?
+%The commands \texttt{cut}, along with \texttt{sort} and \texttt{uniq} may prove to be useful when answering this.
+%\begin{answer}
+%\texttt{ cut -f3 -s GCF\_000011985.1\_ASM1198v1\_genomic.gff | sort | uniq | wc -l}
+%\end{answer}
+%
+%Or we could ask how many of each type of feature are there in this file.
+%\begin{answer}
+%\texttt{ cut -f3 -s GCF\_000011985.1\_ASM1198v1\_genomic.gff | sort | uniq -c}
+%\end{answer}
+%
+%\end{questions}
+%\end{bonus}
+%
+%
+%
+%\section{Pattern Matching in DNA sequences}
+%
+%Let's try searching for some DNA patterns using a fasta file.
+%We can download the genomic sequence for the same organism, so once again head to the same page as last time, but this time copy the link to the \textbf{genome}.
+%
+%\begin{lstlisting}
+%wget <<paste address here>>
+%gunzip GCF_000011985.1_ASM1198v1_genomic.fna.gz
+%\end{lstlisting}
+%
+%Let's try using some of the tricks we've learned above.
+%
+%\begin{questions}
+%How many times does the sequence \texttt{GAAAGGATTA} appear in the genome?\\
+%\begin{answer}
+%\texttt{egrep -c 'GAAAGGATTA' GCF\_000011985.1\_ASM1198v1\_genomic.fna} \\
+%Gives 3\\
+%\end{answer}
+%How many times does this appear, but with two \textbf{or more} Ts before the final A?\\
+%\begin{answer}
+%\texttt{egrep -c 'GAAAGGATT+A' GCF\_000011985.1\_ASM1198v1\_genomic.fna}\\
+%Gives 4\\
+%\end{answer}
+%How many times does this appear, but with two \textbf{or more} Ts but with a G or C following the final T?\\
+%\begin{answer}
+%\texttt{egrep -c 'GAAAGGATT+[\^A]' ...}
+%Gives 7.
+%Clearly, they could also specify (GC) instead of [\^A].
+%\end{answer}
+%\end{questions}
+
+
+%\begin{information}
+%Now we can have a look through the GBS-Seq file (\texttt{pair1.fq}) that we copied \& renamed earlier.
+%Before we search the the file, we should know what we this data actually is.
+%These are a small subset of 100bp reads from a GBS-Seq experiment \& are from the first sample in a set of paired reads.
+%Although we can't tell this directly from this file, the sequences were obtained from a rabbit affected by \textit{calicivirus}.
+%\end{information}
+%
+%\begin{steps}
+%If you inspect the data using the \texttt{head} command, you'll notice that the file is in sets of four lines, as defined by the fastq format.
+%\begin{lstlisting}
+%head pair1.fq
+%\end{lstlisting}
+%The first line contains a \textit{sequence identifier}, the second line is the \textit{sequence} itself, the third line is simply the `+' symbol as a placeholder \& the final line is a set of characters which correspond to \textit{quality scores} for each base.
+%We'll be looking at this file structure in much more detail next week, so that's all we need to know for today's session.
+%\end{steps}
+%
+%\begin{questions}
+%As these reads are from the first sample in a set of paired reads, the final value in the sequence identifier is \texttt{\_1}.
+%How could we search for a pattern just to extract the sequence identifiers? \\
+%\begin{answer}
+%\texttt{egrep `\^{}@.+\_1\$' pair1.fq}
+%\end{answer}
+%
+%Reads from the second in the set of paired reads would have an identifier that ends with the pattern \texttt{\_2}.
+%There are no reads in the file \texttt{pair1.fq} that are the second pair, so what would you expect to see if you changed the \texttt{\_1} in the previous query to \texttt{\_2}? \\
+%\begin{answer}
+%If they didn't include the EOL symbol, they'll get results...
+%\end{answer}
+%
+%\end{questions}
+%
+%\begin{steps}
+%Now we'll try searching for some sequences, so try the following search string. 
+%Does the output match what you expected? \\
+%\texttt{grep -En `TGCAGGCTCT' pair1.fq}
+%\end{steps}
+%
+%This should give lines 774, 3382, 3758, 7326, 7594 \& 9566 along with the sequence information and matching fragment highlighted in red.\\
+%
+%\begin{questions}
+%For the following search string \\
+%\texttt{grep -En `TGCAGGCTCT.+(GA)\{2\}.+A\{3\}' pair1.fq} \\
+%What do the following components of the pattern match to: \\
+%\texttt{`.+'} \\
+%\begin{answer}
+%This matches an unspecified length of any character, until the next key match is found. \\
+%\end{answer}
+%
+%\texttt{(GA)\{2\}} \\
+%\begin{answer}
+%This matches to two repeats of the pattern GA. \\
+%\end{answer}
+%
+%\texttt{A\{3\}}\\
+%\begin{answer}
+%This matches three `A's in a row. \\
+%\end{answer}
+%
+%How could you find the sequence identifier for the above match?\\
+%\begin{answer}
+%\texttt{grep -EnC1 `TGCAGGCTCT.+(GA)\{2\}.+A\{3\}' pair1.fq} or \\
+%\texttt{grep -EnB1 `TGCAGGCTCT.+(GA)\{2\}.+A\{3\}' pair1.fq}
+%\end{answer}
+%\end{questions}
