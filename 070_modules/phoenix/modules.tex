@@ -1,0 +1,166 @@
+\setModuleTitle{Using Modules}
+\setModuleAuthors{%
+  Exequiel Sepulveda, Research Services, University of Adelaide \mailto{exequiel.sepulvedaescobedo@adelaide.edu.au}\\
+}
+\setModuleContributions{%
+  Robert Quiao, Research Services, University of Adelaide \mailto{robert.quiao@adelaide.edu.au} \\
+}
+
+%----------------------------------------------------------------------------------------
+% MODULE TITLE PAGE
+%----------------------------------------------------------------------------------------
+% BEGIN: Module Title Page
+%  * The chapter page will always appear on odd numbered page
+\chapter{\moduleTitle}
+\newpage
+There are many applications that need to change or define configurations to work properly. For example, they need to add the folder where binaries are located to the PATH environmental variable. If an application has many binaries located in /apps/MYAPP/bin, setting the PATH variable can be done by: 
+\begin{lstlisting}
+export PATH=$PATH:/apps/MYAPP/bin
+\end{lstlisting}
+
+Doing manually these modifications may be very tedious. The situation worsen if there are many applications that need to do the same with many potential conflicts and side effects. To keep environmental variables under control, Phoenix has an program that manages applications in a safe way. This program is called "modules"
+
+\section{Basic commands of modules }
+Phoenix has installed hundreds of applications for users to use. By default, all applications are located in /apps/software and each one has a module configuration located in /apps/modules/all.
+Modules program has an unique executable named module. 
+\begin{steps}
+	Try to get the help from module program:
+	\begin{lstlisting}[style=command_syntax]
+	module --help
+	\end{lstlisting}
+\end{steps}
+
+The relevant options of module command are:
+\begin{center}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{|p{4cm} | p{6.5cm} | p{4.5cm}|}
+		\hline
+		\textbf{Option} & \textbf{Description of function} & \textbf{Useful options} \\ \hline
+		\texttt{avail [name]} & Display the list of modules & -r for using regular expressions, -d for listing only the default version of each module \\ \hline
+		\texttt{spider [name]} & Explore and list modules & -r for using regular expressions, -d for listing only the default version of each module \\ \hline
+		\texttt{load name} & Load the specific module name & \\ \hline
+		\texttt{unload name} & Unload the specific module name &  \\ \hline
+		\texttt{list} & List all loaded modules &   \\ \hline
+		\texttt{show name} & Show the information of the module name &  \\ \hline
+		\texttt{purge} & Unload all loaded modules to have a fresh starts &  \\ \hline
+	\end{tabular}
+\end{center}
+
+\begin{steps}
+The \texttt{avail/spider} option should be always used with a text to serach for, because listing all modules installed may be very slow and useless. 
+The correct way to use avail/spider is using a text after, for example, to search Perl modules:\\
+
+\texttt{module avail Perl}\\
+\texttt{module spider Perl}\\
+\end{steps}
+
+\begin{note}
+Spider and Avail are similiar but the output format is different. As an exercise, try to find all matlab modules using spider and avail options.
+\end{note}
+
+\begin{lstlisting}[style=command_syntax]
+module spider matlab
+module avail matlab
+\end{lstlisting}
+
+\begin{steps}
+Repeat the same exercise to search for Python modules installed on Phoenix.
+\end{steps}
+
+In general, most of modules follow this pattern: MODULE/VERSION[-TOOLCHAIN]. For example, for the module Python/3.6.1-foss-2016b: MODULE=Python, VERSION=3.6.1 and TOOLCHAIN=foss-2016b.
+Which toolchain should be selected is critical to understand.
+\begin{information}
+	Toolchain is a set of compiler, utilities and libraries (all they are modules!). The general rule is to use the newest official toolchain, which is foss-2016b. On Phoenix there are two main toolchains, foss and intel. The foss toolchain
+	includes GNU compilers, whereas intel includes Intel compilers.
+	You should use modules with the same toolchain. If you need to use modules with a different toolchain, a best practice is to use the purge option before changing toolchain.
+\end{information}
+
+\section{Loading modules}
+Once you have found the module you want to load, the next step is loading it. 
+\begin{steps}
+For example, search for R modules and load the newest one: 
+\begin{lstlisting}[style=command_syntax]
+module spider R
+
+     Versions:
+R/3.2.1-foss-2015b
+R/3.3.0-foss-2016uofa
+R/3.4.0-foss-2016b
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=command_syntax]
+module load R/3.4.0-foss-2016b
+\end{lstlisting}
+
+To see what happens after the module is loaded, use the option list: 
+\begin{lstlisting}[style=command_syntax]
+module list
+\end{lstlisting}
+\end{steps}
+Why are there many loaded modules? It is because R/3.4.0-foss-2016b module has many prerequisites that are automatically loaded as well.
+\begin{information}
+In most the cases, module configurations include automatically all modules needed. In few cases, because a precise control is necessary, this should be manually done. 
+\end{information}
+
+\section{Using modules}
+Once you have loaded modules, the current session will be correctly configured to use those modules. For example, you could load any Python module and check if the version is the correct one:
+ \begin{lstlisting}[style=command_syntax]
+ module load Python
+ 
+ python --version
+ \end{lstlisting}
+
+\begin{warning}
+	Be careful with modules containing programs that are part of the operating system. For example, C/C++ compiler, Python, Perl, among others. If you don't load the right module, you may end using the wrong version.
+\end{warning}
+
+\begin{questions}
+	What is the Python version included in the operating system?
+	\begin{answer}
+		 \begin{lstlisting}
+			module purge
+			python --version
+			Python 2.7.5
+		\end{lstlisting}
+	\end{answer}
+\end{questions} 
+
+\section{A complete exercise of modules}
+In this section you are asked to complete a full exercise to reach a master level of modules.
+Run the traditional "Hello World!" program in four different languages and versions.
+
+Python 2.X:
+ \begin{lstlisting}[style=command_syntax]
+print "Hello World, from Python 2.x" 
+\end{lstlisting}
+Python 3.X:
+ \begin{lstlisting}[style=command_syntax]
+print("Hello World, from Python 3.x")
+\end{lstlisting}
+R:
+ \begin{lstlisting}[style=command_syntax]
+print("Hello World, from R")
+\end{lstlisting}
+Matlab:
+ \begin{lstlisting}[style=command_syntax]
+display("Hello World, from matlab");
+\end{lstlisting}
+
+And these are the examples of how to run programs on those languages: \\
+R:
+ \begin{lstlisting}[style=command_syntax]
+echo 'COMMAND' | R --no-save
+\end{lstlisting}
+Matlab:
+ \begin{lstlisting}[style=command_syntax]
+matlab -noFigureWindows -nodisplay -r 'COMMAND; exit;'
+\end{lstlisting}
+Python:
+ \begin{lstlisting}[style=command_syntax]
+python -c COMMAND
+\end{lstlisting}
+
+\begin{steps}
+	The exercise is to find the modules to run each program and execute them. Replace COMMAND accordingly to each language.
+\end{steps}

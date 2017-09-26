@@ -1,0 +1,277 @@
+\setModuleTitle{The Tools sed \& awk}
+\setModuleAuthors{%
+  Stephen Bent, Robinson Research Institute, University of Adelaide\\
+  Steve Pederson, Bioinformatics Hub, University of Adelaide \mailto{stephen.pederson@adelaide.edu.au}\\
+}
+\setModuleContributions{%
+  Dan Kortschak, Adelson Research Group, University of Adelaide \mailto{dan.kortschak@adelaide.edu.au} \\
+}
+
+%----------------------------------------------------------------------------------------
+% MODULE TITLE PAGE
+%----------------------------------------------------------------------------------------
+% BEGIN: Module Title Page
+%  * The chapter page will always appear on odd numbered page
+\chapter{\moduleTitle}
+\newpage
+
+\section{sed: The Stream Editor}
+\begin{information}
+One very useful command in the terminal is \texttt{sed}, which is short for \textit{\underline{s}tream \underline{ed}itor}.
+Instead of the \texttt{man} page for \texttt{sed} the \texttt{info sed} page is larger but a little easier to digest.
+This is a very powerful command which can be a little overwhelming at first.
+If using this for your own scripts \& you can't figure something out, remember ``Google is your friend'' \& sites like \url{www.stackoverflow.com} are full of people wrestling with similar problems to you.
+You can be certain you're not the first person to be stumped by a problem \& these are great places to start looking for help. 
+Even advanced programmers use Google \& Stack Overflow to find solutions.\\
+\end{information}
+
+For today, there are two key \texttt{sed} functionalities that we want to introduce.\\
+\begin{enumerate}
+\item Using \texttt{sed} to alter the contents of a file/input;
+\item Using \texttt{sed} to print regions of a file
+\end{enumerate}
+
+\subsection*{Altering a file or other input}
+\texttt{sed} uses \textit{regular expressions} that we have come across under the \texttt{grep} section, and we can use these to replace strings or characters within a text string.
+The command works in the form 
+\begin{lstlisting}[style=command_syntax]
+sed SCRIPT INPUT
+\end{lstlisting}
+and the script section is where all the action happens.
+Input can be given to \texttt{sed} as either a file, or just as a text stream via \texttt{stdin} using the \textit{pipe} symbol that we have already introduced.
+
+\begin{steps}
+In the following example the script section begins with an `s' to indicate that we are going to make a substitution.
+The beginning of the first pattern (i.e. the \textit{regexp} we are searching for) is denoted with the backslash, with the identical delimiter indicating the replacement pattern, and this is in turn completed with the same delimiter.
+Try this simple example from the link \url{http://www.grymoire.com/Unix/Sed.html} which is a very detailed \& helpful resource about the usage \texttt{sed}.
+Here we are sending the input to the command via the pipe, so no `INPUT' section is required: \\
+\end{steps}
+
+\begin{lstlisting}
+echo Sunday | sed 's/day/night/' 
+\end{lstlisting}
+
+Here you are passing \texttt{sed} the string Sunday, and \texttt{sed} takes day and turns it into night.  
+\texttt{sed} will only replace the first instance of the string on any line, so try: \\
+
+\begin{lstlisting}
+echo Sundayday | sed 's/day/night/' 
+\end{lstlisting}
+
+Note that it only replaced the first instance of day and left the second.  
+However, you can make it 'global', where it switches every instance by using the `g' option at the end of the pattern like this: \\
+
+\begin{lstlisting}
+echo Sundayday | sed 's/day/night/g' 
+\end{lstlisting}
+
+You can also `capture' parts of the pattern in parentheses and access that in the second part of the regular expression (what you are switching to) using \textbackslash 1, \textbackslash 2, etc., to denoted the number of the captured string, in the order they were captured.
+If you want to match `ATGNNNTGA', where N is any base, and just output these three bases you could try the following:\\
+\begin{lstlisting}
+echo 'ATGCCAGTA' | sed -r 's/ATG(.{3})GTA/\1/g'
+\end{lstlisting}
+
+Clearly, we have just given this command a sequence so we know exactly what to expect.
+However, hopefully this demonstrates the concept of extracting a subset of the sequence.
+
+Or if we needed to replace those three bases with an expanded repeat of them, you could do the following where we capture the undefined string between \texttt{ATG} \& \texttt{GTA}, and expand it: \\
+\begin{lstlisting}
+echo 'ATGCCAGTA' | sed -r 's/ATG(.{3})GTA/ATG\1\1\1GTA/g'
+\end{lstlisting}
+
+The \textbackslash 1 take the contents of the first parenthesis and uses it in the substitution, even though you don't know what the bases are.
+Note that the `-r' option was set for these operations, which turns on extended regular expression capabilities.
+This can be a powerful tool \& multiple parentheses can also be used: \\
+\begin{lstlisting}
+echo 'ATGCCAGTA' | sed -r 's/(ATG)(.{3})(GTA)/\3\2\2\1/g'
+\end{lstlisting}
+
+In this last command we switched the order of the first \& last triplet, and expanded the middle unknown string twice.
+Note how quickly this starts to look confusing though!
+Taking care to be clear when writing these types of procedures can be an important idea when you have to go back \& re-read your code a year or two later.
+(Yes this will happen a lot!!!)
+
+\begin{information}
+The use of backslashes to delineate each section of the script used by \texttt{sed} is the most common convention, but we are not restricted to it.
+We could have uses any `wild-card' type character to follow the `s', such as `*' `:' or `\%' although this must be consistent across all sections of the script, and should only be used if the backslash itself is part of the search or replacement string.
+\end{information}
+
+\subsection*{Displaying a region from a file}
+The command \texttt{sed} can also be used to replicate some of the functionality of the \texttt{head} \& grep commands, but with a little more power at your fingertips.
+By default \texttt{sed} will print the entire input stream it receives, but setting the option `-n' will turn this off.
+Try this by adding an `n' immediately after the `-r' in one of the above lines \& you will notice you receive no output.
+This is useful if we wish to restrict our output to a subset of lines within a file, and by including a `p' at the end of the script section, only the section matching the results of the script will be printed.
+\begin{steps}
+Make sure you are in the correct directory \& we can look through the \texttt{regular\_express.txt} file again.
+\begin{lstlisting}
+sed -n '1,10p' regular_express.txt
+\end{lstlisting}
+This will print the first 10 lines, like the \texttt{head} command will by default.
+However, we could now print any range of lines we choose.
+Try this by changing the script to something interesting like `15,21p'.\\
+\\
+We could also restrict the range to specific lines by using the \texttt{sed} increment operator `\~{}'.
+\begin{lstlisting}
+sed -n '1~5p' regular_express.txt
+\end{lstlisting}
+This will print every 5th line, beginning at the first.
+\end{steps}
+
+\begin{steps}
+We can also make sed operate like \texttt{grep} by making it only print the lines which match a pattern.
+\begin{lstlisting}
+sed -rn '/g[o]*d/ p' regular_express.txt
+\end{lstlisting}
+Note however, that the line numbers are not present in this output.
+\end{steps}
+
+%\begin{questions}
+%How would we use \texttt{sed} to extract the lines from the genome sequence which match the pattern \texttt{ATGC.+ACAA.*}? What text does this pattern represent?\\
+%\begin{answer}
+%\texttt{ sed -rn '/ATGC.+ACAA.*/p' GCF\_000011985.1\_ASM1198v1\_genomic.fna}\\
+%\end{answer}
+%How would we use the pipe to extract the unspecified sequence between the ATGC and the ACAA?\\
+%\begin{answer}
+%\texttt{sed -rn '/ATGC.+ACAA.*/p' GCF\_000011985.1\_ASM1198v1\_genomic.fna | sed -r 's/ATGC(.+)ACAA.*/\textbackslash 1/g'
+%}
+%\end{answer}
+%\end{questions}
+
+\section{Some Important Programming Concepts}
+
+Before moving on to awk, we need to quickly recap two of the most widely used techniques in programming:
+\begin{enumerate}
+  \item The \texttt{for} loop
+  \item Logical tests using an \texttt{if} statement
+\end{enumerate}
+
+\subsubsection*{For Loops}
+
+\begin{steps}
+A \texttt{for} loop is what we use to cycle through an input one item at a time.
+As a simple example, we could print each number from a set of numbers.
+\begin{lstlisting}
+for i in 1 2 3; do (echo -e $i); done
+\end{lstlisting}
+\end{steps}
+
+\begin{information}
+In the above code, the fragment before the semi-colon asked the program to cycle through the values 1, 2 \& 3, letting the variable `i' take each value in order of appearance.
+First i = 1, then i = 2 \& finally i = 3.
+If you're wondering why we chose `i', it just seemed like a sensible choice for an integer. 
+We simply needed to choose a name for a \textit{variable} which we would pass the values to.\\
+
+After assigning each value to \texttt{i}, was the instruction on what to do for each value.
+Note that the value of the variable `i' was \textit{prefaced by the dollar sign (\$).
+This is how the bash shell knows it is a variable, not the letter `i'.}
+The command \texttt{done} then finished the \texttt{do} command.
+All commands like \texttt{do}, \texttt{if} or \texttt{case} have completing statements, which respectively are \texttt{done}, \texttt{fi} \& \texttt{esac}.\\
+
+Another important concept which was glossed over in the previous paragraph is that of a \textit{variable}.
+These are essentially just `\textit{placeholders}' which have a value that can change (hence the name).
+In the above loop, the same operation was performed on the variable \texttt{i}, but the value changed from 1 to 2 to 3.
+Variables in shell scripts can hold numbers or text strings and don't have to be formally defined as in some other languages.
+\end{information}
+
+\begin{advanced}
+An alternate approach could be to make a breathtaking claim about some files.
+Here we'll use the variable called `f', which seems sensible for a filename.
+\begin{lstlisting}
+cd /apps/examples/training_linux/scripting/
+for f in $(ls); do (echo -e "I can see the file $f"); done
+cd -
+\end{lstlisting}
+\end{advanced}
+
+Note, that we've also assigned the output from the command \texttt{ls} to this variable, by using the \$() syntax.
+The use of double quotes for the \texttt{echo} command also allows us to refer to the values held by f.
+Single quotes at this point would only return the characters `\$f'.
+
+\subsubsection{If Statements}
+If statements are those which only have a binary `yes' or `no' response, or more correctly a \texttt{TRUE}/\texttt{FALSE} response.
+For example, we could specify things like:
+\begin{itemize}
+\item \texttt{if} (i$>1$) then \texttt{do} something, or
+\item \texttt{if} (fileName==bob.txt) then \texttt{do} something else
+\end{itemize}
+
+\begin{information}
+Notice that in the second if statement, there was a double equals sign.
+This is the programmers way of saying \textit{compare} the first argument with the second argument.
+A single equals sign is generally interpreted by a program as \textit{assign} the value of the first argument to be the second argument.
+This use of `double operators' is very common, notably you will see \&\& to represent the command `\textit{and}', and $\Vert$ to represent `\textit{or}.'
+A final useful trick to be aware of is the use of an exclamation mark to reverse a command.
+A good example of this is the use of the command `!=' as the representation of \textit{not equal to} in a logical test.
+\end{information}
+
+\section{awk: A command and a language}
+Moving on to \texttt{awk}, this is a very useful tool which can be used either as a command, as well as functioning as it's own language.
+We'll just use it as a command today, and it is extremely useful for dealing with tab- or comma-separated files, such as we often see in biological data.\\
+\begin{information}
+The basic structure of an \texttt{awk} command is: 
+\begin{lstlisting}[style=command_syntax]
+awk '/<pattern>/' file
+\end{lstlisting}
+\texttt{awk} will then search the file and output any line containing the regular expression pattern (kind of like \texttt{grep)}.
+With \texttt{awk}, you can also do: 
+\begin{lstlisting}[style=command_syntax]
+awk '\{<code>\}' file
+\end{lstlisting}
+where you can put a program, or set of instructions in the curly braces. 
+In the code, you can specify values from different columns of the file by using the numbers \$1, \$2, etc., (or you can use \$0 for the whole line).
+Values can also be returned in the output by using the command \texttt{print} followed by the field number.
+\end{information}
+
+\begin{steps}
+We have that regular\_express.txt file and we've already looked at it at little, so let's pull out some particular features!
+Make your terminal as wide as the screen, then change into the appropriate directory \& enter
+\begin{lstlisting}
+ awk '{if  ($3=="is")  print $0}' regular_express.txt
+\end{lstlisting}
+Here we've specified that the third field must be is. \\
+
+We could make it a little more complex and just look for genes in a given region.
+\textbf{In the following line, the symbol `\textbackslash ' has been placed here to indicate it is a single line, extending beyond the width of the page.
+Do not enter this character!}
+\begin{lstlisting}
+awk '{if ( ($3=="gene") && ($4 > 10000) && ($4 < 20000) ) print $0}' regular_express.txt
+\end{lstlisting}
+\end{steps}
+\begin{note}
+In the above code, \texttt{\$3==``gene''} asks for the entry in the third field to be ``gene.''
+The next two fragments request for the values in the fourth field (i.e. \$4) to be between 10000 \& 20000.
+%awk '{if (($5 - $4 > 1000) && ($3 == "gene")) print $1, $2, $4, $5, $9}' regular_express.txt
+Notice that each these three commands were enclosed in a pair of brackets within an outer pair of brackets.
+This gave a command of the form: \\
+\texttt{( (Condition1) \&\& (Condition2) \&\& (Condition3) )} \\
+After this came the fragment \texttt{print \$0} which asked \texttt{awk} to print the entire line if the 3 conditions are true.
+You've just written (\& hopefully understood) a computer program!
+\end{note}
+
+\begin{steps}
+Another example (what does this do?): \\
+\begin{lstlisting}
+awk '{if (($5 - $4 > 1000) && ($3 == "gene")) print $0}' regular_express.txt
+\end{lstlisting}
+If you don't want to output all of the columns, you can specify which ones to output.  
+While we're at it, let's save the output as a file: \\
+\begin{lstlisting}
+awk '{if (($5 - $4 > 1000) && ($3 == "gene")) print $1, $2, $4, $5, $9}' regular_express.txt > awkout.txt
+\end{lstlisting}
+\end{steps}
+
+\begin{advanced}
+The command \texttt{awk} has a pretty serious set of in-built commands which can be used in the code sections as above.
+Although it looks a little overwhelming, there is a detailed page \url{http://www.grymoire.com/Unix/Awk.html} which gives a rundown on the full capabilities of the language.
+One command that we may find helpful is \texttt{length}, which counts the number of characters in a line.
+
+%In your \texttt{trainingData} directory you'll find another file \texttt{seqData.fastq}.
+%This is a small set of reads from some mRNA pulled down by Immunoprecipitation, and they've been processed to have varying lengths.
+
+%\begin{questions}
+%Can you think of a way to combine \texttt{sed} and \texttt{awk} to create a new file \texttt{lengths.txt} which contains the length of every read in the file \texttt{seqData.fastq}?
+%\end{questions}
+%\begin{answer}}
+%\texttt{sed -n `2\~{}4p' seqData.fastq | awk `\{print length(\$1)\}' > lengths.txt}
+%\end{answer}
+\end{advanced}

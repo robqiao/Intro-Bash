@@ -16,6 +16,7 @@ script:
 after_success:
 - if [[ "$TRAVIS_BRANCH" == "master" ]]; then bash ./developers/deploy-ghpages.sh;
   fi
+
 cache:
   directories:
   - "/usr/local/texlive"

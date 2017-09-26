@@ -1,0 +1,128 @@
+\setModuleTitle{Writing Basic Slurm Scripts}
+\setModuleAuthors{%
+  Exequiel Sepulveda, Research Services, University of Adelaide \mailto{exequiel.sepulvedaescobedo@adelaide.edu.au}\\
+}
+\setModuleContributions{%
+  Robert Quiao, Research Services, University of Adelaide \mailto{robert.quiao@adelaide.edu.au} \\
+}
+
+%----------------------------------------------------------------------------------------
+% MODULE TITLE PAGE
+%----------------------------------------------------------------------------------------
+% BEGIN: Module Title Page
+%  * The chapter page will always appear on odd numbered page
+\chapter{\moduleTitle}
+\newpage
+Phoenix is a shared HPC facility, therefore, all its resources are not for exclusive use of a particular user.
+The Phoenix architecture includes a head node and many computing nodes. The head node is where you are placed, after connect to Phoenix and is not designed for real computing. 
+\\
+The computing nodes are only available to our scheduler Slurm, which receives many scripts from all users and decides when and where to run those scripts according to the resources availables and account priorities.
+When Slurm receives a now job (or script) to run, he evaluates when is the sooner available time to run the job and assigns one or many computing nodes.
+The job will be ran by computing nodes, but not by the head node.  
+\\
+\begin{information}
+	Slurm accounting, resources and priorities are complex enough. We have a workshop dedicated to this.
+\end{information}
+ 
+Therefore, to use the real power of Phoenix you need to write a slurm script. The script template is very simple: it is a normal script as you have written many, but with several Slurm meta-parameters at the beginning of the script.
+
+\section{Basic template of a Slurm script}
+A useful template for any slurm job is like this:
+\begin{lstlisting}
+#!/bin/bash
+#SBATCH -p batch
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --time=00:05:00
+#SBATCH --mem=1GB
+
+#If you want to get feedback by email
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=firstname.lastname@adelaide.edu.au
+
+#LOAD HERE ALL MODULES YOU NEED
+#module load MODULE1
+#module load MODULE2
+#module load MODULE3
+
+#EXECUTE HERE WHATEVER YOU WANT
+#hostname
+\end{lstlisting}
+
+Let's have a look to each Slurm meta-parameter:
+
+\texttt{\#SBATCH -p batch} indicates the queue where the job will be submited to. 
+
+Phoenix has several queues, for example batch, test and bigmem. The batch queue is the default one for almost all kind of jobs.
+The queue test is useful to test jobs since the waiting times are reduced but also resources are limited just for testing.
+
+\begin{information}
+	\texttt{\#SBATCH -N 1} indicates the number of computing nodes needed to run the job. Usually should be set to 1.
+	\texttt{\#SBATCH -n 1} indicates the number of cores needed to run the job. Usually should be set to 1.
+\end{information}
+
+\begin{warning}
+    Most of programs are serial and do not have parallel capabilities. If you do not know the capability of a program, assume the program is serial and, therefore, nodes and cores should be set to 1.
+    If the program can use multicores, nodes should be set to 1 and cores to the desired number of cores, but less or equals to 32, which is the current maximum.
+    If the program can use Message Passing Interface (MPI) and multicores, nodes should be set to equals or greater than 1, and cores to the desired number of cores, but less or equals to nodes*32.
+\end{warning}
+
+\begin{information}
+	\texttt{\#SBATCH --time=00:05:00} indicates the maximum walltime of the job. In this example the maximum time will be 5 minutes. \\
+	\texttt{\#SBATCH --mem=1GB} indicates the maximum amount of memory. In this example the maximum memory will be 1 Gigabytes.
+\end{information}
+
+\begin{warning}
+	Both time and mem meta-parameters are hard limits parameters. This means, if the job spends more time or consumes more memory, the jos will be cancelled.
+	There is a trade-off. You would use conservative values, but if you overestimate them, the scheduler will take longer to executed it.
+\end{warning}
+
+Getting notifications by e-mail is optional, but it is very recommended to know the progress of a job.
+
+\begin{information}
+	\texttt{\#SBATCH --mail-type=ALL} indicates that Slurm will notify any state change, such as Cancelation, Success and Failure.
+	\texttt{\#SBATCH --mail-user=firstname.lastname@adelaide.edu.au} indicates the email address to send those notifications.
+\end{information}
+
+\section{Submitting Scripts}
+Once you have a script ready to submit, you need to "submit" the script to the scheduler by the use of the command \texttt{sbatch}. 
+Let's assume there is a script \textit{job\_script.sh}. To submit it to the schedule, just use the following command:
+
+\begin{lstlisting}[style=command_syntax]
+$ sbatch jobs_script.sh
+Submitted batch job 3853482
+\end{lstlisting}
+
+In return you get a job number or \textit{JOBID}, 3853482 is the example above, which is very important to record.
+Also, a new file with name slurm-\textit{JOBID}.out is generated with the output of the script.
+
+\begin{questions}
+    Create and submit a script that shows the hostname. Hint: the command for asking the hostanme is \texttt{hostname}.
+\end{questions}
+
+\section{Managing Scripts}
+Finally, after a job submission, you would need to manage its execution and get the information of completition. There are four basic commands to manage jobs:
+\begin{center}
+	\renewcommand{\arraystretch}{1.6}
+	\begin{tabular}{|p{4cm} | p{6.5cm} | p{4.5cm}|}
+		\hline
+		\textbf{Command} & \textbf{Description of function} & \textbf{Options} \\ \hline
+		\texttt{squeue} & Display the list of queued jobs & -u USER \\ \hline
+		\texttt{scancel} & Cancel the execution of JOBID & JOBID \\ \hline
+		\texttt{scontrol show job} & Show useful information of a queued or running job & JOBID \\ \hline
+		\texttt{rcstat} & Show useful informartion of a job, specially for a completed job & JOBID \\ \hline
+	\end{tabular}
+\end{center}
+
+Now, from the last exercise in the Modules chapter (the execution of Hello World example in four languages), the final exercise:
+
+\begin{questions}
+    Adapt that script as a Slurm script and submit it to the scheduler.
+\end{questions} 
+You can monitor its execution.
+
+\begin{information}
+The command \texttt{rcstat} is useful to get the job statistics back, such as the real time spent, cpu and memory used, among others. 
+You should use this information to adjust those values for the next submissions in order to request the right resources
+as closer as possible to the real ones.
+\end{information}
