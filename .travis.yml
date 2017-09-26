@@ -11,6 +11,7 @@ before_install:
   -in bot_deploy_key.enc -out deploy_key -d
 - git submodule update --init --recursive
 script:
+- sudo make clean
 - sudo -E make tex_env
 - make -j 4 all
 after_success:
