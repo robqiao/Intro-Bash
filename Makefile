@@ -8,7 +8,7 @@ handout_latex_files  = handout.tex
 
 # Grab any tex files in 'handout' subdirectories and construct a sed command for adding them into
 # a copy of the template.tex file
-MODULE_TEX_FILES = $(shell find ./ -maxdepth 3 -type f -path '[0-9]*/phoenix/*.tex' 2> /dev/null | sort -n)
+MODULE_TEX_FILES = $(shell find ./ -maxdepth 3 -type f -path './[0-9]*/phoenix/*.tex' 2> /dev/null | sort -n)
 MODULE_SED_EXPRESSIONS = $(addprefix -e '/^\\chapterstyle{module}/a \\\input{, $(addsuffix }', $(MODULE_TEX_FILES)))
 
 trainer_output_files = $(addprefix trainer_, $(addsuffix .pdf, $(basename $(handout_latex_files))))
@@ -47,13 +47,13 @@ $(handout_latex_files): template.tex $(MODULE_TEX_FILES)
 	sed -e '/^$$/d' $(MODULE_SED_EXPRESSIONS) < template.tex > $@
 
 trainee_%.pdf: %.tex
-	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
+	sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
 
 trainer_%.pdf: %.tex
-	/bin/sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' $<
+	sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
-	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
+	sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
 
 clean: 
 	if [[ -e $(handout_latex_files) ]]; then latexmk -C -jobname=trainee_$(basename $(handout_latex_files)) $(handout_latex_files); latexmk -C -jobname=trainer_$(basename $(handout_latex_files)) $(handout_latex_files); fi
