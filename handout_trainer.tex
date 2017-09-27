@@ -1,8 +1,7 @@
 \documentclass[a4paper,12pt,twoside]{memoir}
-
 \usepackage{longtable}
-%\usepackage[trainermanual]{btp}
-\usepackage{btp}    % Use the trainermanual package option (i.e. \usepackage[trainermanual]{btp}) to generate the Trainer's version of the manual
+\usepackage{btp}
+%\usepackage{btp}    % Use the trainermanual package option (i.e. \usepackage[trainermanual]{btp}) to generate the Trainer's version of the manual
 %\usepackage[
 %  noinfo,
 %  cam,
@@ -13,15 +12,11 @@
 %  center                % actual page is centered on the galley
 %]{crop}
 % Set some Workshop specific info
-
 %\usepackage{underscore}
-
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{color}
 \definecolor{light-blue}{rgb}{0.8,0.85,1}
-
-
 \setWorkshopTitle{Introduction to Linux for Phoenix Users}
 \setWorkshopVenue{University of Adelaide}
 \setWorkshopDate{26th September, 2017}
@@ -35,38 +30,30 @@ Bowen Chen\\
 Exequiel Sepulveda\\
 }
 \begin{document}
-
 %
 % Workshop Title Page
 %
 \workshoptitlepage
-
 %
 % CC-BY
 %
 \input{licences/licence.tex}
 \clearpage
-
 \tableofcontents
-
 \chapter{Workshop Information}
 \clearpage
-
 %
 % Workshop Preamble
 %
 \input{010_trainers/phoenix/trainers.tex}
 \input{015_preamble/phoenix/preamble.tex}
-
 \clearpage
 \input{016_computer_setup/phoenix/setup.tex}
-
 %
 % Start of modules
 % Switch chapter styling to module
 %
 \chapterstyle{module}
-
 \input{018_intro_linux/phoenix/intro_linux.tex}
 \input{025_more_tips/phoenix/tips.tex}
 \input{030_regular_expressions/phoenix/regexp.tex}
@@ -75,16 +62,13 @@ Exequiel Sepulveda\\
 \input{060_writing_scripts/phoenix/scripts.tex}
 \input{070_modules/phoenix/modules.tex}
 \input{080_slurm_scripts/phoenix/scripts.tex}
-
 %
 % End of modules
 % Switch back to normal workshop chapter styling
 %
 \chapterstyle{workshop}
-
 \chapter{Space for Personal Notes or Feedback}
 \clearpage
-
 %
 % Some empty ruled comments pages
 %
@@ -92,5 +76,4 @@ Exequiel Sepulveda\\
 \myruledpage{0cm}{1cm}
 \myruledpage{0cm}{1cm}
 \myruledpage{0cm}{1cm}
-
 \end{document}

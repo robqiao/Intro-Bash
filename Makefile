@@ -5,13 +5,14 @@ SHELL = bash
 .PHONY: 
 
 handout_latex_files  = handout.tex
+handout_latex_files_trainer = handout_trainer.tex
 
 # Grab any tex files in 'handout' subdirectories and construct a sed command for adding them into
 # a copy of the template.tex file
 MODULE_TEX_FILES = $(shell find ./ -maxdepth 3 -type f -path '[0-9]*/phoenix/*.tex' 2> /dev/null | sort -n)
 MODULE_SED_EXPRESSIONS = $(addprefix -e '/^\\chapterstyle{module}/a \\\input{, $(addsuffix }', $(MODULE_TEX_FILES)))
 
-trainer_output_files = $(addprefix trainer_, $(addsuffix .pdf, $(basename $(handout_latex_files))))
+trainer_output_files = $(addprefix trainer_, $(addsuffix .pdf, $(basename $(handout_latex_files_trainer))))
 trainee_output_files = $(addprefix trainee_, $(addsuffix .pdf, $(basename $(handout_latex_files))))
 
 # First rule should always be the default "all" rule, so both "make all" and
@@ -50,6 +51,9 @@ trainee_%.pdf: %.tex
 	/bin/sed -i -e 's@^\\usepackage\[trainermanual\]{btp}@\\usepackage{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
 
+$(handout_latex_files_trainer): template_trainer.tex $(MODULE_TEX_FILES)
+	sed -e '/^$$/d' $(MODULE_SED_EXPRESSIONS) < template_trainer.tex > $@
+
 trainer_%.pdf: %.tex
 	/bin/sed -i -e 's@^\\usepackage{btp}@\\usepackage[trainermanual]{btp}@' $<
 	TEXINPUTS=.:.//:$$TEXINPUTS latexmk -pdf -jobname=$(basename $@) -pdflatex='pdflatex -halt-on-error %O %S -synctex=1 -interaction=nonstopmode --src-specials' -quiet -f -use-make $<
@@ -59,3 +63,4 @@ clean:
 	if [[ -e $(handout_latex_files) ]]; then latexmk -C -jobname=trainee_$(basename $(handout_latex_files)) $(handout_latex_files); latexmk -C -jobname=trainer_$(basename $(handout_latex_files)) $(handout_latex_files); fi
 	rm -f *.cut licences/*.xmpi
 	rm -f $(handout_latex_files)
+	rm -f $(handout_latex_files_trainer)
